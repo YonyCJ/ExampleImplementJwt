@@ -6,14 +6,13 @@ import com.prapp.examplesecurityjwt.dao.entity.UserProfileEntity;
 import com.prapp.examplesecurityjwt.dao.repository.ProfileRepository;
 import com.prapp.examplesecurityjwt.dao.repository.UserProfileRepository;
 import com.prapp.examplesecurityjwt.dao.repository.UserRepository;
-import com.prapp.examplesecurityjwt.expose.dto.JsonResponse;
 import com.prapp.examplesecurityjwt.expose.dto.UserDto;
 import com.prapp.examplesecurityjwt.expose.dto.UserProfileDto;
 import com.prapp.examplesecurityjwt.business.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,37 +27,9 @@ public class UserServiceImpl implements UserService {
     private final UserProfileRepository userProfileRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Override
     @Transactional
-    public JsonResponse login(UserDto.LoginRequest request) {
-        /*// Buscar al usuario por su nombre de usuario y validar que esté activo
-        UserEntity existingUser = userRepository.findByUsernameAndIsActiveTrue(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("No user found or password is incorrect"));
-
-        // Verificar la contraseña
-        if (!passwordEncoder.matches(request.getPassword(), existingUser.getPassword())) {
-            throw new RuntimeException("No user found or password is incorrect");
-        }
-
-        // Obtener los perfiles del usuario
-        List<String> profiles = userProfileRepository.findByUserUsername(request.getUsername()).stream()
-                .map(userProfileEntity -> userProfileEntity.getProfile().getName())
-                .toList();
-
-        // Generar el token
-        JsonResponse response = jwtService.generateToken(
-                existingUser.getUsername(),
-                request.getUsername(),
-                profiles
-        );
-
-        // Incluir el estado de actividad en la respuesta
-        response.setActive(existingUser.getIsActive());
-        return response;*/
-        return null;
-    }
-
-    @Override
     public UserDto.Response register(UserDto.Request request) {
         if (userRepository.findByUsernameAndIsActiveTrue(request.getUsername()).isPresent()) {
             throw new RuntimeException("El nombre de usuario ya está en uso.");
